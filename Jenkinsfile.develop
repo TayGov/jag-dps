@@ -10,12 +10,17 @@ pipeline {
     options {
         disableResume()
     }
-    stage('SCM') {
-        steps{
-            git url: 'https://github.com/bcgov/jag-dps'
-        }
-    }
     stages {
+            stage('Hello World') {
+                steps{
+                    echo "Hello World"
+                }
+            }/*
+            stage('SCM') {
+                steps{
+                    git url: 'https://github.com/bcgov/jag-dps'
+                }
+            }
         stage('Build Branch') {
             options {
                 timeout(time: 90, unit: 'MINUTES')   // timeout on this stage
@@ -38,7 +43,6 @@ pipeline {
                 sh ".github/cicd/player.sh deploy fig-validation-service dev"
             }
         }
-        /*
         stage('SonarQube Analysis and Reporting') {
             steps{
                 def scannerHome = tool 'SonarScanner 4.0';
