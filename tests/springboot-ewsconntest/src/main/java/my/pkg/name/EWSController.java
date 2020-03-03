@@ -2,6 +2,7 @@ package my.pkg.name;
 
 import java.net.URI;
 
+import microsoft.exchange.webservices.data.core.service.folder.Folder;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -20,6 +21,13 @@ import microsoft.exchange.webservices.data.search.filter.SearchFilter;
 @RestController
 public class EWSController {
 
+	public EWSController(ExchangeService exchangeService) {
+		this.exchangeService = exchangeService;
+	}
+
+	private ExchangeService exchangeService;
+
+
 /**
  *
  * Outlook client. 
@@ -30,18 +38,10 @@ public class EWSController {
  * @throws Exception
  */
 @RequestMapping("/getMessageCount")
-public String getMessageCount() throws Exception {	  
-	 
-	  String email = "your gov email here"; 
-	  String passwd ="your idir password here";
-	 
-	  ExchangeService service = EWSAutodiscoverAPI.connectViaExchangeAutodiscover(email, passwd);
-	  
-	  // current (DEV) API Gateway endpoint for EWS
-	  service.setUrl(new URI("https://wsgw.dev.jag.gov.bc.ca/dps/bcgov/ews/services/Exchange.asmx")); 
-	  
-	  FindItemsResults<Item> findResults = findItems(service);
-	  
+public String getMessageCount() throws Exception {
+
+	  Folder inbox = Folder.bind(exchangeService, WellKnownFolderName.Inbox);
+	  FindItemsResults<Item> findResults = findItems(exchangeService);
 	  return Integer.toString(findResults.getTotalCount()) + " Messages found in you Inbox";
 	  
   }
