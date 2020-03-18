@@ -16,10 +16,6 @@ public class OrdsFigcrProperties {
     private String username;
     private String password;
 
-    public OrdsFigcrProperties() {
-        //What is the purpose of this constructor
-    }
-
     public String getBasepath() {
         return basePath;
     }
